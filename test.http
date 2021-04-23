@@ -1,0 +1,30 @@
+POST http://127.0.0.1:2021/auth/login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "blackpink",
+    "password": "tarikjabrix"
+}
+
+###
+
+POST http://localhost:2021/auth/register HTTP/1.1
+content-type: application/json
+
+{
+    "username": "blackpink",
+    "fullname": "rboyy",
+    "email": "angga@gmail.com",
+    "password": "tarikjabrix",
+    "role": ""
+}
+
+
+###
+
+GET http://localhost:2021/api/users HTTP/1.1
+content-type: application/json
+
+{
+    
+}
