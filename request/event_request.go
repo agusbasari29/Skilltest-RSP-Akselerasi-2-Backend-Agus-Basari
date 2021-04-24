@@ -7,7 +7,7 @@ import (
 )
 
 type RequestEvent struct {
-	CreatorId         uint               `json:"creator_id"`
+	CreatorId         int                `json:"creator_id"`
 	TitleEvent        string             `json:"title_event"`
 	LinkWebinar       string             `json:"link_webinar"`
 	Description       string             `json:"description"`

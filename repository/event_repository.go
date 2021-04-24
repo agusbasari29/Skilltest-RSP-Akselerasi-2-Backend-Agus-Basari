@@ -23,7 +23,7 @@ func NewEventRepository(db *gorm.DB) *eventRepository {
 }
 
 func (r *eventRepository) InsertEvent(event entity.Event) (entity.Event, error) {
-	err := r.db.Raw("INSERT INTO event (creator_id, title_event, link_webinar,description, banner, price, quantity, status, event_start_date, event_end_date, campaign_start_date, campaign_end_date) VALUES (@CreatorId, @TitleEvent, @LinkWebinar, @Description, @Banner, @Price, @Quantity, @Status, @EventStartDate, @EventEndDate, @CampaignStartDate, @CampaignEndDate)", event).Save(&event).Error
+	err := r.db.Raw("INSERT INTO events (creator_id, title_event, link_webinar,description, banner, price, quantity, status, event_start_date, event_end_date, campaign_start_date, campaign_end_date, created_at) VALUES (@CreatorId, @TitleEvent, @LinkWebinar, @Description, @Banner, @Price, @Quantity, @Status, @EventStartDate, @EventEndDate, @CampaignStartDate, @CampaignEndDate, @CreatedAt)", event).Save(&event).Error
 	if err != nil {
 		return event, err
 	}
@@ -32,7 +32,7 @@ func (r *eventRepository) InsertEvent(event entity.Event) (entity.Event, error) 
 
 func (r *eventRepository) GetAllEvent() []entity.Event {
 	var event []entity.Event
-	result := r.db.Raw("SELECT * FROM event").Find(&event)
+	result := r.db.Raw("SELECT * FROM events").Find(&event)
 	if result != nil {
 		return event
 	}
@@ -40,7 +40,7 @@ func (r *eventRepository) GetAllEvent() []entity.Event {
 }
 
 func (r *eventRepository) UpdateEvent(event entity.Event) (entity.Event, error) {
-	err := r.db.Raw("UPDATE event SET creator_id = @CreatorId, title_event = @TitleEvent, link_webinar = @LinkWebinar, description = @Description, banner = @Banner, price = @Price, quantity = @Quantity, status = @Status, event_start_date = @EventStartDate, event_end_date = @EventEndDate, campaign_start_date = @CampaignStartDate, campaign_end_date = @CampaignEndDate WHERE id = @ID", event).Save(&event).Error
+	err := r.db.Raw("UPDATE events SET creator_id = @CreatorId, title_event = @TitleEvent, link_webinar = @LinkWebinar, description = @Description, banner = @Banner, price = @Price, quantity = @Quantity, status = @Status, event_start_date = @EventStartDate, event_end_date = @EventEndDate, campaign_start_date = @CampaignStartDate, campaign_end_date = @CampaignEndDate WHERE id = @ID", event).Save(&event).Error
 	if err != nil {
 		return event, err
 	}
@@ -48,7 +48,7 @@ func (r *eventRepository) UpdateEvent(event entity.Event) (entity.Event, error) 
 }
 
 func (r *eventRepository) DeleteEvent(event entity.Event) error {
-	err := r.db.Raw("UPDATE event SET deleted_at = &DeletedAt WHERE id = @ID", event).Save(&event).Error
+	err := r.db.Raw("UPDATE events SET deleted_at = &DeletedAt WHERE id = @ID", event).Save(&event).Error
 	if err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func (r *eventRepository) DeleteEvent(event entity.Event) error {
 
 func (r *eventRepository) GetEventByStatus(event entity.Event) []entity.Event {
 	var events []entity.Event
-	err := r.db.Raw("SELECT * FROM event WHERE status = @Status", event).Find(&events).Error
+	err := r.db.Raw("SELECT * FROM events WHERE status = @Status", event).Find(&events).Error
 	if err != nil {
 		return nil
 	}
@@ -65,7 +65,7 @@ func (r *eventRepository) GetEventByStatus(event entity.Event) []entity.Event {
 }
 
 func (r *eventRepository) GetEventByID(event entity.Event) (*entity.Event, error) {
-	err := r.db.Raw("SELECT * FROM event WHERE id = @ID").Take(&event).Error
+	err := r.db.Raw("SELECT * FROM events WHERE id = @ID").Take(&event).Error
 	if err != nil {
 		return &event, err
 	}

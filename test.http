@@ -2,7 +2,7 @@ POST http://127.0.0.1:8080/auth/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "kodokijo",
+    "username": "suoeradmin",
     "password": "apasajalah"
 }
 
@@ -12,11 +12,11 @@ POST http://localhost:8080/auth/register HTTP/1.1
 content-type: application/json
 
 {
-    "username": "kodokijo",
+    "username": "sangatadmin",
     "fullname": "m hafizh a",
     "email": "agusbasari299@gmail.com",
     "password": "apasajalah",
-    "role": "creator"
+    "role": "admin"
 }
 
 
@@ -62,4 +62,15 @@ Authorization: Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMCwicm
     "email": "agusbasari299@gmail.com",
     "password": "apasajalah",
     "role": "creator"
+}
+
+
+###
+
+GET http://localhost:8080/api/creators HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMiwicm9sZSI6ImFkbWluIiwiZW1haWwiOiJhZ3VzYmFzYXJpMjk5QGdtYWlsLmNvbSIsImV4cCI6MTY1MDc4ODg0MCwiaWF0IjoxNjE5MjUyODQwLCJpc3MiOiJ4angifQ.kh8kOhc-imcALOBebQYSEJbfant_HcL7JJNLyXLD9ow
+
+{
+
 }

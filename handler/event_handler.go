@@ -54,7 +54,7 @@ func (h *eventHandler) CreateEvent(ctx *gin.Context) {
 		if err != nil {
 			log.Fatalf(err.Error())
 		}
-		req.CreatorId = uint(id)
+		req.CreatorId = id
 		newEvent, err := h.eventServices.CreateEvent(req)
 		if err != nil {
 			errorFormatter := helper.ErrorFormatter(err)
