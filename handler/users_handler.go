@@ -66,24 +66,3 @@ func (h *userHandler) Profile(c *gin.Context) {
 	response := helper.ResponseFormatter(http.StatusOK, "OK", "OK", user)
 	c.JSON(http.StatusOK, response)
 }
-
-func (h *userHandler) Test(c *gin.Context) {
-	var req request.RequestUser
-	err := c.ShouldBind(req)
-	if err != nil {
-		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "invalid data type", nil)
-		c.AbortWithStatusJSON(http.StatusBadRequest, response)
-		return
-	}
-	valErr := validate.Struct(req)
-	if valErr != nil {
-		errorFormatter := helper.ErrorFormatter(valErr)
-		errorMessage := helper.M{"error": errorFormatter}
-		response := helper.ResponseFormatter(http.StatusBadRequest, "validation", errorMessage, nil)
-		c.AbortWithStatusJSON(http.StatusBadRequest, response)
-		return
-	}
-
-	response := helper.ResponseFormatter(http.StatusOK, "OK", "OK", nil)
-	c.JSON(http.StatusOK, response)
-}

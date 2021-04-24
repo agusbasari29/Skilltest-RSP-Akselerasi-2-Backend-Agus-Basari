@@ -25,6 +25,9 @@ func DefineSecureApiRoutes(e *gin.Engine) {
 	var jwtService services.JWTServices = services.NewJWTService()
 	handlers := []helper.Handler{
 		UserRoute{},
+		TransactionRoutes{},
+		EventRoutes{},
+		CreatorRoutes{},
 	}
 
 	var routes []helper.Route

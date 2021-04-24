@@ -14,6 +14,8 @@ type UserRepository interface {
 	GetByUsername(username string) interface{}
 	ProfileUser(user entity.Users) (entity.Users, error)
 	EmailIsExist(email string) bool
+	GetUserByRole(user entity.Users) ([]entity.Users, error)
+	DeleteCreator(user entity.Users) error
 }
 
 type userRepository struct {
@@ -28,7 +30,7 @@ func (r *userRepository) InsertUser(user entity.Users) (entity.Users, error) {
 	if user.Role == "" {
 		user.Role = entity.Participant
 	}
-	err := r.db.Raw("INSERT INTO public.users (username, fullname, email, password, role) VALUES (@Username, @Fullname, @Email, @Password, @Role)", user).Create(&user).Error
+	err := r.db.Raw("INSERT INTO users (username, fullname, email, password, role) VALUES (@Username, @Fullname, @Email, @Password, @Role)", user).Create(&user).Error
 	if err != nil {
 		return user, err
 	}
@@ -61,19 +63,19 @@ func (r *userRepository) FindByEmail(user entity.Users) (entity.Users, error) {
 
 func (r *userRepository) UserIsExist(username string) bool {
 	var user entity.Users
-	res := r.db.Raw("SELECT * FROM public.users WHERE username=@Username", map[string]interface{}{"Username": username}).Take(&user)
+	res := r.db.Raw("SELECT * FROM users WHERE username=@Username", map[string]interface{}{"Username": username}).Take(&user)
 	return res.Error == nil
 }
 
 func (r *userRepository) EmailIsExist(email string) bool {
 	var user entity.Users
-	res := r.db.Raw("SELECT * FROM public.users WHERE email=@Email", map[string]interface{}{"Username": email}).Take(&user)
+	res := r.db.Raw("SELECT * FROM users WHERE email=@Email", map[string]interface{}{"Username": email}).Take(&user)
 	return res.Error == nil
 }
 
 func (r *userRepository) GetByUsername(username string) interface{} {
 	user := entity.Users{}
-	res := r.db.Raw("SELECT * FROM public.users WHERE username=@Username", map[string]interface{}{"Username": username}).Take(&user)
+	res := r.db.Raw("SELECT * FROM users WHERE username=@Username", map[string]interface{}{"Username": username}).Take(&user)
 	if res.Error == nil {
 		return user
 	}
@@ -81,9 +83,26 @@ func (r *userRepository) GetByUsername(username string) interface{} {
 }
 
 func (r *userRepository) ProfileUser(user entity.Users) (entity.Users, error) {
-	err := r.db.Raw("SELECT * FROM public.users WHERE id=@ID", user).Take(&user)
+	err := r.db.Raw("SELECT * FROM users WHERE id=@ID", user).Take(&user)
 	if err != nil {
 		return user, err.Error
 	}
 	return user, nil
+}
+
+func (r *userRepository) GetUserByRole(user entity.Users) ([]entity.Users, error) {
+	var users []entity.Users
+	err := r.db.Raw("SELECT * FROM users WHERE role = @Role", user).Find(&users).Error
+	if err != nil {
+		return users, err
+	}
+	return users, nil
+}
+
+func (r *userRepository) DeleteCreator(user entity.Users) error {
+	err := r.db.Raw("SELECT * FROM users WHERE id=@ID", user).Delete(&user).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }

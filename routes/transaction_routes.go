@@ -9,30 +9,25 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type AuthRoutes struct{}
+type TransactionRoutes struct{}
 
-func (r AuthRoutes) Route() []helper.Route {
+func (r TransactionRoutes) Route() []helper.Route {
 	db := database.SetupDatabaseConnection()
-	useRepo := repository.NewUserRepository(db)
-	userServices := services.NewUserServices(useRepo)
-	jwtService := services.NewJWTService()
-	authHandler := handler.NewAuthHandler(userServices, jwtService)
+	trxRepo := repository.NewTransactionRepository(db)
+	trxServices := services.NewTransactionServices(trxRepo)
+	jwtServices := services.NewJWTService()
+	participantHandler := handler.NewParticipantHandler(trxServices, jwtServices)
 
 	return []helper.Route{
 		{
-			Method:  "POST",
-			Path:    "/register",
-			Handler: []gin.HandlerFunc{authHandler.Register},
+			Path:    "/pending_payment",
+			Method:  "GET",
+			Handler: []gin.HandlerFunc{participantHandler.GetAllPendingTransaction},
 		},
 		{
+			Path:    "/payment_confirmation",
 			Method:  "POST",
-			Path:    "/login",
-			Handler: []gin.HandlerFunc{authHandler.Login},
-		},
-		{
-			Method:  "POST",
-			Path:    "/forget_password",
-			Handler: []gin.HandlerFunc{authHandler.ForgetPassword},
+			Handler: []gin.HandlerFunc{participantHandler.ChangeStatusPaymentParticipant},
 		},
 	}
 }

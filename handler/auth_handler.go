@@ -12,12 +12,12 @@ import (
 )
 
 type authHandler struct {
-	authService services.AuthServices
-	jwtService  services.JWTServices
+	userServices services.UserServices
+	jwtService   services.JWTServices
 }
 
-func NewAuthHandler(authService services.AuthServices, jwtService services.JWTServices) *authHandler {
-	return &authHandler{authService, jwtService}
+func NewAuthHandler(userServices services.UserServices, jwtService services.JWTServices) *authHandler {
+	return &authHandler{userServices, jwtService}
 }
 
 func (h *authHandler) Register(c *gin.Context) {
@@ -38,12 +38,12 @@ func (h *authHandler) Register(c *gin.Context) {
 		return
 	}
 
-	if h.authService.UserIsExist(req.Username) {
+	if h.userServices.UserIsExist(req.Username) {
 		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User is alerady registered!", nil)
 		c.AbortWithStatusJSON(http.StatusConflict, response)
 		return
 	}
-	newUser, err := h.authService.CreateUser(req)
+	newUser, err := h.userServices.CreateUser(req)
 	if err != nil {
 		errorFormatter := helper.ErrorFormatter(err)
 		errorMessage := helper.M{"error": errorFormatter}
@@ -79,7 +79,7 @@ func (h *authHandler) Login(c *gin.Context) {
 		return
 	}
 
-	credential := h.authService.VerifyCredential(req.Username, req.Password)
+	credential := h.userServices.VerifyCredential(req.Username, req.Password)
 	if v, ok := credential.(entity.Users); ok {
 		generatedToken := h.jwtService.GenerateToken(v)
 		userData := response.ResponseUserFormatter(v)
@@ -110,7 +110,7 @@ func (h *authHandler) ForgetPassword(c *gin.Context) {
 		return
 	}
 
-	EmailIsExist := h.authService.EmailIsExist(req)
+	EmailIsExist := h.userServices.EmailIsExist(req)
 	if !EmailIsExist {
 		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User with this email is not registered.", nil)
 		c.AbortWithStatusJSON(http.StatusBadRequest, response)

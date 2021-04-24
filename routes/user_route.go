@@ -45,14 +45,6 @@ func (r UserRoute) Route() []helper.Route {
 			Path:    "/users",
 			Method:  "POST",
 			Handler: []gin.HandlerFunc{userHandler.UpdateUser},
-		}, {
-			Path:    "/test",
-			Method:  "GET",
-			Handler: []gin.HandlerFunc{userHandler.Test},
-		}, {
-			Path:    "/test",
-			Method:  "DELETE",
-			Handler: []gin.HandlerFunc{userHandler.Test},
 		},
 	}
 }
