@@ -3,6 +3,7 @@ package services
 import (
 	"fmt"
 	"log"
+	"time"
 
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/entity"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/repository"
@@ -39,6 +40,7 @@ func (s *authServices) CreateUser(req request.RequestAuthRegister) (entity.Users
 		panic(err.Error())
 	}
 	user.Password = string(hashedPassword)
+	user.CreatedAt = time.Now()
 	fmt.Println(hashedPassword)
 	newUser, err := s.repository.InsertUser(user)
 	if err != nil {
@@ -56,13 +58,6 @@ func (s *authServices) VerifyCredential(username string, password string) interf
 	res := s.repository.GetByUsername(username)
 	if v, ok := res.(entity.Users); ok {
 		comparedPassword := comparePassword(v.Password, password)
-		fmt.Println("password :", password)
-		fmt.Println("Password :", v.Password)
-		fmt.Println("Username :", v.Username)
-		fmt.Println("username :", username)
-		fmt.Println("ComparedPassword :", comparedPassword)
-		fmt.Println("byte password :", []byte(password))
-		fmt.Println("byte Password :", []byte(v.Password))
 		if v.Username == username && comparedPassword {
 			return res
 		}
@@ -79,6 +74,7 @@ func (s *authServices) UpdatePassword(req request.RequestAuthUpdate) bool {
 	}
 	user.ID = req.ID
 	user.Password = string(generatePassword)
+	user.UpdatedAt = time.Now()
 	res := s.repository.UpdateUserPassword(user)
 	return res == nil
 }

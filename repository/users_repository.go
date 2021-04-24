@@ -36,7 +36,7 @@ func (r *userRepository) InsertUser(user entity.Users) (entity.Users, error) {
 }
 
 func (r *userRepository) UpdateUser(user entity.Users) (entity.Users, error) {
-	err := r.db.Exec("UPDATE users SET username=@Username fullname=@Fullname email=@Email role=@Role WHERE id=@ID", user).Save(&user)
+	err := r.db.Exec("UPDATE users SET username=@Username fullname=@Fullname email=@Email role=@Role updated_at=@UpdatedAt WHERE id=@ID", user).Save(&user)
 	if err.Error != nil {
 		return user, err.Error
 	}
