@@ -74,3 +74,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMiwic
 {
 
 }
+
+###
+DELETE http://localhost:8080/api/creators HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMiwicm9sZSI6ImFkbWluIiwiZW1haWwiOiJhZ3VzYmFzYXJpMjk5QGdtYWlsLmNvbSIsImV4cCI6MTY1MDc4ODg0MCwiaWF0IjoxNjE5MjUyODQwLCJpc3MiOiJ4angifQ.kh8kOhc-imcALOBebQYSEJbfant_HcL7JJNLyXLD9ow
+
+{
+    "id": 11
+}

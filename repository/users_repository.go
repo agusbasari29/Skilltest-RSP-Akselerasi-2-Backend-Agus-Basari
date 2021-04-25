@@ -100,7 +100,7 @@ func (r *userRepository) GetUserByRole(user entity.Users) ([]entity.Users, error
 }
 
 func (r *userRepository) DeleteCreator(user entity.Users) error {
-	err := r.db.Raw("SELECT * FROM users WHERE id=@ID", user).Delete(&user).Error
+	err := r.db.Raw("SELECT * FROM users WHERE id = @ID", user).Delete(&user).Error
 	if err != nil {
 		return err
 	}

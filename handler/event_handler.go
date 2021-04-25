@@ -66,9 +66,10 @@ func (h *eventHandler) CreateEvent(ctx *gin.Context) {
 		eventFormat := response.ResponseEventFormatter(newEvent)
 		response := helper.ResponseFormatter(http.StatusOK, "success", "New event successfully created.", eventFormat)
 		ctx.JSON(http.StatusOK, response)
+	} else {
+		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 	}
-	response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
-	ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 }
 
 func (h *eventHandler) UpdateEvent(ctx *gin.Context) {
@@ -106,9 +107,10 @@ func (h *eventHandler) UpdateEvent(ctx *gin.Context) {
 		eventFormat := response.ResponseEventFormatter(updateEvent)
 		response := helper.ResponseFormatter(http.StatusOK, "success", "Event successfully updated.", eventFormat)
 		ctx.JSON(http.StatusOK, response)
+	} else {
+		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 	}
-	response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
-	ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 }
 
 func (h *eventHandler) GetAllEvent(ctx *gin.Context) {
@@ -147,9 +149,10 @@ func (h *eventHandler) GetAllEvent(ctx *gin.Context) {
 		}
 		response := helper.ResponseFormatter(http.StatusOK, "success", "Successfully fetching data.", eventFormat)
 		ctx.JSON(http.StatusOK, response)
+	} else {
+		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 	}
-	response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
-	ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 }
 
 func (h *eventHandler) DeletedEvent(ctx *gin.Context) {
@@ -184,9 +187,10 @@ func (h *eventHandler) DeletedEvent(ctx *gin.Context) {
 		}
 		response := helper.ResponseFormatter(http.StatusOK, "success", "Event successfully deleted.", nil)
 		ctx.JSON(http.StatusOK, response)
+	} else {
+		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 	}
-	response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
-	ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 }
 
 func (h *eventHandler) GetEventByReleaseStatus(ctx *gin.Context) {
@@ -211,9 +215,10 @@ func (h *eventHandler) GetEventByReleaseStatus(ctx *gin.Context) {
 		}
 		response := helper.ResponseFormatter(http.StatusOK, "success", "Successfully fetching all release event data.", eventFormat)
 		ctx.JSON(http.StatusOK, response)
+	} else {
+		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 	}
-	response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
-	ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 }
 
 func (h *eventHandler) MakeEventPurchase(ctx *gin.Context) {
@@ -283,7 +288,8 @@ func (h *eventHandler) MakeEventPurchase(ctx *gin.Context) {
 		formatter := response.ResponseTransactionFormatter(createTrx)
 		response := helper.ResponseFormatter(http.StatusOK, "success", "Successfully create new transaction.", formatter)
 		ctx.JSON(http.StatusOK, response)
+	} else {
+		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 	}
-	response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
-	ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 }

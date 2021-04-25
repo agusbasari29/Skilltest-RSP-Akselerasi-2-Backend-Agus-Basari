@@ -118,9 +118,10 @@ func (h *creatorHandler) UpdateCreator(ctx *gin.Context) {
 		}
 		response := helper.ResponseFormatter(http.StatusOK, "success", "Creator sucessfully updated.", update)
 		ctx.JSON(http.StatusOK, response)
+	} else {
+		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 	}
-	response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
-	ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 }
 
 func (h *creatorHandler) GetAllCreator(ctx *gin.Context) {
@@ -148,9 +149,10 @@ func (h *creatorHandler) GetAllCreator(ctx *gin.Context) {
 		}
 		response := helper.ResponseFormatter(http.StatusOK, "success", "Successfully fetching data.", resultFormat)
 		ctx.JSON(http.StatusOK, response)
+	} else {
+		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 	}
-	response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
-	ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 }
 
 func (h *creatorHandler) DeleteCreator(ctx *gin.Context) {
@@ -164,8 +166,33 @@ func (h *creatorHandler) DeleteCreator(ctx *gin.Context) {
 	role := fmt.Sprintf("%v", claims["role"])
 	admin := role == string(entity.Admin)
 	if admin {
-
+		var req request.RequestUserProfile
+		errReq := ctx.ShouldBind(&req)
+		if errReq != nil {
+			response := helper.ResponseFormatter(http.StatusBadRequest, "error", "invalid", nil)
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+			return
+		}
+		validationErr := validate.Struct(req)
+		if validationErr != nil {
+			errorFormatter := helper.ErrorFormatter(validationErr)
+			errorMessage := helper.M{"error": errorFormatter}
+			response := helper.ResponseFormatter(http.StatusBadRequest, "error", errorMessage, nil)
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+			return
+		}
+		var user entity.Users
+		user.ID = req.ID
+		err := h.userServices.DeleteCreator(user)
+		if err != nil {
+			response := helper.ResponseFormatter(http.StatusBadRequest, "error", "Failed to delete creator", nil)
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+		} else {
+			response := helper.ResponseFormatter(http.StatusOK, "success", "Creator successfully deleted.", nil)
+			ctx.JSON(http.StatusOK, response)
+		}
+	} else {
+		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 	}
-	response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
-	ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 }
