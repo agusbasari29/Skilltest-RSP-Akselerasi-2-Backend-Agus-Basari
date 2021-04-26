@@ -22,7 +22,7 @@ func (r TransactionRoutes) Route() []helper.Route {
 		{
 			Path:    "/payment_confirmation",
 			Method:  "POST",
-			Handler: []gin.HandlerFunc{},
+			Handler: []gin.HandlerFunc{participantHandler.GetPasticipantPendingTransaction},
 		},
 		{
 			Path:    "/pending_payment",
@@ -30,7 +30,7 @@ func (r TransactionRoutes) Route() []helper.Route {
 			Handler: []gin.HandlerFunc{participantHandler.GetAllPendingTransaction},
 		},
 		{
-			Path:    "/payment_confirmation",
+			Path:    "/payment_status",
 			Method:  "POST",
 			Handler: []gin.HandlerFunc{participantHandler.ChangeStatusPaymentParticipant},
 		},

@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/cache"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/entity"
@@ -38,7 +40,8 @@ func (h *eventHandler) CreateEvent(ctx *gin.Context) {
 	claims := token.Claims.(jwt.MapClaims)
 	role := fmt.Sprintf("%v", claims["role"])
 	admin := role == string(entity.Admin)
-	if admin || role == string(entity.Creator) {
+	creator := role == string(entity.Creator)
+	if admin || creator {
 		err = ctx.ShouldBind(&req)
 		if err != nil {
 			errorMessage := helper.M{"error": err.Error()}
@@ -57,6 +60,24 @@ func (h *eventHandler) CreateEvent(ctx *gin.Context) {
 			log.Fatalf(err.Error())
 		}
 		req.CreatorId = id
+		file, err := ctx.FormFile("banner")
+		if err != nil {
+			errFormat := helper.ErrorFormatter(err)
+			errMessage := helper.M{"error": errFormat}
+			response := helper.ResponseFormatter(http.StatusBadRequest, "error", errMessage, nil)
+			ctx.AbortWithStatusJSON(http.StatusOK, response)
+		}
+		path := filepath.Base("/files/img/banner/")
+		filetype := strings.Split(file.Filename, ".")
+		destFile := path + req.TitleEvent + filetype[1]
+		if err := ctx.SaveUploadedFile(file, destFile); err != nil {
+			errorFormatter := helper.ErrorFormatter(err)
+			errorMessage := helper.M{"error": errorFormatter}
+			response := helper.ResponseFormatter(http.StatusBadRequest, "error", errorMessage, nil)
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+			return
+		}
+		req.Banner = destFile
 		newEvent, err := h.eventServices.CreateEvent(req)
 		if err != nil {
 			errorFormatter := helper.ErrorFormatter(err)
@@ -85,7 +106,8 @@ func (h *eventHandler) UpdateEvent(ctx *gin.Context) {
 	claims := token.Claims.(jwt.MapClaims)
 	role := fmt.Sprintf("%v", claims["role"])
 	admin := role == string(entity.Admin)
-	if admin || role == string(entity.Creator) {
+	creator := role == string(entity.Creator)
+	if admin || creator {
 		err = ctx.ShouldBind(req)
 		if err != nil {
 			response := helper.ResponseFormatter(http.StatusBadRequest, "error", "invalid data type", nil)
@@ -98,6 +120,24 @@ func (h *eventHandler) UpdateEvent(ctx *gin.Context) {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 			return
 		}
+		file, err := ctx.FormFile("banner")
+		if err != nil {
+			errFormat := helper.ErrorFormatter(err)
+			errMessage := helper.M{"error": errFormat}
+			response := helper.ResponseFormatter(http.StatusBadRequest, "error", errMessage, nil)
+			ctx.AbortWithStatusJSON(http.StatusOK, response)
+		}
+		path := filepath.Base("/files/img/banner/")
+		filetype := strings.Split(file.Filename, ".")
+		destFile := path + req.TitleEvent + filetype[1]
+		if err := ctx.SaveUploadedFile(file, destFile); err != nil {
+			errorFormatter := helper.ErrorFormatter(err)
+			errorMessage := helper.M{"error": errorFormatter}
+			response := helper.ResponseFormatter(http.StatusBadRequest, "error", errorMessage, nil)
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+			return
+		}
+		req.Banner = destFile
 		updateEvent, err := h.eventServices.UpdateEvent(req)
 		if err != nil {
 			errorFormatter := helper.ErrorFormatter(err)
@@ -126,7 +166,8 @@ func (h *eventHandler) GetAllEvent(ctx *gin.Context) {
 	claims := token.Claims.(jwt.MapClaims)
 	role := fmt.Sprintf("%v", claims["role"])
 	admin := role == string(entity.Admin)
-	if admin || role == string(entity.Creator) {
+	creator := role == string(entity.Creator)
+	if admin || creator {
 		err = ctx.ShouldBind(req)
 		if err != nil {
 			response := helper.ResponseFormatter(http.StatusBadRequest, "error", "invalid data type", nil)
@@ -311,7 +352,7 @@ func (h *eventHandler) MakeEventPurchase(ctx *gin.Context) {
 			return
 		}
 		if len(totalTrx) > event.Quantity {
-			response := helper.ResponseFormatter(http.StatusBadRequest, "error", "Event sold out!", nil)
+			response := helper.ResponseFormatter(http.StatusBadRequest, "error", "Event ticket is sold out!", nil)
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 			return
 		}
@@ -333,6 +374,7 @@ func (h *eventHandler) MakeEventPurchase(ctx *gin.Context) {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 			return
 		}
+		//TODO notif
 		formatter := response.ResponseTransactionFormatter(createTrx)
 		response := helper.ResponseFormatter(http.StatusOK, "success", "Successfully create new transaction.", formatter)
 		ctx.JSON(http.StatusOK, response)

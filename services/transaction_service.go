@@ -15,6 +15,7 @@ type TransactionServices interface {
 	GetTransactionByEventAndParticipantAndStatusPayment(trx entity.Transaction) bool
 	GetTransactionByEventID(req request.RequestTransaction) ([]entity.Transaction, error)
 	GetPendingTrasaction() ([]entity.Transaction, error)
+	GetParticipantPendingTrasaction(req request.RequestParticipantTransaction) ([]entity.Transaction, error)
 	UpdateTransaction(req request.RequestTransactionUpdate) (entity.Transaction, error)
 }
 
@@ -58,6 +59,17 @@ func (s *transactionServices) GetTransactionByEventID(req request.RequestTransac
 func (s *transactionServices) GetPendingTrasaction() ([]entity.Transaction, error) {
 	var trx entity.Transaction
 	trx.StatusPayment = ""
+	result, err := s.transactionRepository.GetTransactionByStatusPayment(trx)
+	if err == nil {
+		return result, err
+	}
+	return result, nil
+}
+
+func (s *transactionServices) GetParticipantPendingTrasaction(req request.RequestParticipantTransaction) ([]entity.Transaction, error) {
+	var trx entity.Transaction
+	trx.StatusPayment = ""
+	trx.ParticipantId = int(req.ParticipantId)
 	result, err := s.transactionRepository.GetTransactionByStatusPayment(trx)
 	if err == nil {
 		return result, err

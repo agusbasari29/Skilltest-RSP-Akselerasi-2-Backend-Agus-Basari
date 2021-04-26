@@ -10,8 +10,14 @@ type RequestTransaction struct {
 	StatusPayment entity.StatusPayment `json:"status_payment"`
 }
 
+type RequestAllParticipantTransaction struct {
+	ID            uint                 `json:"id" validate:"required"`
+	StatusPayment entity.StatusPayment `json:"status_payment" validate:"required"`
+}
+
 type RequestParticipantTransaction struct {
 	ID            uint                 `json:"id" validate:"required"`
+	ParticipantId uint                 `json:"participant_id" validate:"required"`
 	StatusPayment entity.StatusPayment `json:"status_payment" validate:"required"`
 }
 
@@ -22,4 +28,8 @@ type RequestTransactionUpdate struct {
 	EventId       uint                 `json:"event_id" validate:"required"`
 	Amount        float32              `json:"amount" validate:"required"`
 	StatusPayment entity.StatusPayment `json:"status_payment"`
+}
+
+type RequestTransactionID struct {
+	ID uint `json:"id" validate:"required"`
 }

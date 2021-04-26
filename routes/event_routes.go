@@ -5,7 +5,6 @@ import (
 
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/cache"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/database"
-	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/entity"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/handler"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/helper"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/repository"
@@ -17,7 +16,6 @@ type EventRoutes struct{}
 
 func (r EventRoutes) Route() []helper.Route {
 	db := database.SetupDatabaseConnection()
-	db.AutoMigrate(&entity.Event{}, &entity.Transaction{})
 	eventRepo := repository.NewEventRepository(db)
 	trxRepo := repository.NewTransactionRepository(db)
 	eventServices := services.NewEventServices(eventRepo)

@@ -22,9 +22,10 @@ type jwtService struct {
 }
 
 type jwtCustomClaim struct {
-	UserID uint            `json:"user_id"`
-	Role   entity.UserRole `json:"role"`
-	Email  string          `json:"email"`
+	UserID   uint            `json:"user_id"`
+	Role     entity.UserRole `json:"role"`
+	Email    string          `json:"email"`
+	Username string          `json:"username"`
 	jwt.StandardClaims
 }
 
@@ -48,6 +49,7 @@ func (j *jwtService) GenerateToken(user entity.Users) response.ResponseCredentia
 	claims.UserID = user.ID
 	claims.Role = user.Role
 	claims.Email = user.Email
+	claims.Username = user.Username
 	claims.ExpiresAt = time.Now().AddDate(1, 0, 0).Unix()
 	claims.Issuer = j.issuer
 	claims.IssuedAt = time.Now().Unix()
