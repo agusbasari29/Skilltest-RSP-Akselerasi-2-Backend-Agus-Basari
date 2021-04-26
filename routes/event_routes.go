@@ -1,6 +1,9 @@
 package routes
 
 import (
+	"os"
+
+	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/cache"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/database"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/entity"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/handler"
@@ -19,8 +22,9 @@ func (r EventRoutes) Route() []helper.Route {
 	trxRepo := repository.NewTransactionRepository(db)
 	eventServices := services.NewEventServices(eventRepo)
 	jwtServices := services.NewJWTService()
+	var cacheService cache.EventCache = cache.NewRedisCache(os.Getenv("REDIS_ADDR_PORT"), 0, 10)
 	trxServices := services.NewTransactionServices(trxRepo)
-	eventHandler := handler.NewEventHandler(eventServices, jwtServices, trxServices)
+	eventHandler := handler.NewEventHandler(eventServices, jwtServices, trxServices, cacheService)
 
 	return []helper.Route{
 		{

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/cache"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/entity"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/helper"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/request"
@@ -17,12 +18,13 @@ import (
 
 type eventHandler struct {
 	eventServices       services.EventServices
-	transactionServices services.TransactionServices
 	jwtService          services.JWTServices
+	transactionServices services.TransactionServices
+	eventCache          cache.EventCache
 }
 
-func NewEventHandler(eventServices services.EventServices, jwtService services.JWTServices, transactionServices services.TransactionServices) *eventHandler {
-	return &eventHandler{eventServices, transactionServices, jwtService}
+func NewEventHandler(eventServices services.EventServices, jwtService services.JWTServices, transactionServices services.TransactionServices, eventCache cache.EventCache) *eventHandler {
+	return &eventHandler{eventServices, jwtService, transactionServices, eventCache}
 }
 
 func (h *eventHandler) CreateEvent(ctx *gin.Context) {
@@ -167,7 +169,7 @@ func (h *eventHandler) DeletedEvent(ctx *gin.Context) {
 	role := fmt.Sprintf("%v", claims["role"])
 	admin := role == string(entity.Admin)
 	if admin {
-		err = ctx.ShouldBind(req)
+		err = ctx.ShouldBind(&req)
 		if err != nil {
 			response := helper.ResponseFormatter(http.StatusBadRequest, "error", "invalid data type", nil)
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
@@ -215,6 +217,52 @@ func (h *eventHandler) GetEventByReleaseStatus(ctx *gin.Context) {
 		}
 		response := helper.ResponseFormatter(http.StatusOK, "success", "Successfully fetching all release event data.", eventFormat)
 		ctx.JSON(http.StatusOK, response)
+	} else {
+		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+	}
+}
+
+func (h *eventHandler) GetEventDetail(ctx *gin.Context) {
+	authHeader := ctx.GetHeader("Authorization")
+	token, err := h.jwtService.ValidateToken(authHeader)
+	if err != nil {
+		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "Authorization needed.", nil)
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+	}
+	claims := token.Claims.(jwt.MapClaims)
+	role := fmt.Sprintf("%v", claims["role"])
+	if role == string(entity.Participant) {
+		var req request.RequestEventByID
+		err = ctx.ShouldBind(req)
+		if err != nil {
+			response := helper.ResponseFormatter(http.StatusBadRequest, "error", "invalid data type", nil)
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+			return
+		}
+		err = validate.Struct(req)
+		if err != nil {
+			response := helper.ResponseFormatter(http.StatusBadRequest, "error", "invalid input type", nil)
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+			return
+		}
+		e := entity.Event{ID: req.ID}
+		id := strconv.Itoa(int(e.ID))
+		var event *entity.Event = h.eventCache.Get(id)
+		if event == nil {
+			event, err := h.eventServices.GetEventByID(req)
+			if err != nil {
+				response := helper.ResponseFormatter(http.StatusBadRequest, "error", "No event found.", nil)
+				ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+				return
+			}
+			h.eventCache.Set(id, event)
+			response := helper.ResponseFormatter(http.StatusOK, "success", "Success retreiving event detail", event)
+			ctx.JSON(http.StatusOK, response)
+		} else {
+			response := helper.ResponseFormatter(http.StatusBadRequest, "error", "Failed to retreiving event detail.", nil)
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+		}
 	} else {
 		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, response)

@@ -52,3 +52,11 @@ func (c *redisCache) Get(key string) *entity.Event {
 	}
 	return &post
 }
+
+func (c *redisCache) Del(key string) {
+	client := c.getClient()
+	err := client.Del(key).Err
+	if err != nil {
+		panic(err)
+	}
+}
