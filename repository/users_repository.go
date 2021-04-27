@@ -106,3 +106,12 @@ func (r *userRepository) DeleteCreator(user entity.Users) error {
 	}
 	return nil
 }
+
+func (r *userRepository) GetUserRole(role string) []entity.Users {
+	var users []entity.Users
+	err := r.db.Raw("SELECT * FROM users WHERE role = ?", role).Scan(&users).Error
+	if err != nil {
+		panic(err)
+	}
+	return users
+}

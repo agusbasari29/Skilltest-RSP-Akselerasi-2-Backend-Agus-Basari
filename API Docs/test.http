@@ -83,3 +83,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMiwic
 {
     "id": 11
 }
+
+###
+
+GET http://localhost:8080/seeder HTTP/1.1

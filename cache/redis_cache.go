@@ -63,7 +63,6 @@ func (c *redisCache) Del(key string) {
 
 func (c *redisCache) GetKeys(pattern string) *redis.StringSliceCmd {
 	client := c.getClient()
-
 	keys := client.Keys(pattern)
 	if keys != nil {
 		return keys
