@@ -198,7 +198,7 @@ func (h *eventHandler) GetAllEvent(ctx *gin.Context) {
 	}
 }
 
-func (h *eventHandler) DeletedEvent(ctx *gin.Context) {
+func (h *eventHandler) DeleteEvent(ctx *gin.Context) {
 	var req request.RequestEventByID
 	authHeader := ctx.GetHeader("Authorization")
 	token, err := h.jwtService.ValidateToken(authHeader)

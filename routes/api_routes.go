@@ -28,6 +28,7 @@ func DefineSecureApiRoutes(e *gin.Engine) {
 		TransactionRoutes{},
 		EventRoutes{},
 		CreatorRoutes{},
+		ReportRoutes{},
 	}
 
 	var routes []helper.Route

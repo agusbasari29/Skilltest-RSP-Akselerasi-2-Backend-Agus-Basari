@@ -15,6 +15,7 @@ type Transaction struct {
 	ParticipantId int
 	Participant   Users `gorm:"foreignKey:ParticipantId"`
 	CreatorId     int
+	Receipt       string
 	EventId       int
 	Amount        float32
 	StatusPayment StatusPayment

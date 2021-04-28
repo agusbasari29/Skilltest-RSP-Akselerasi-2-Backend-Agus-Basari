@@ -30,7 +30,7 @@ func (r *userRepository) InsertUser(user entity.Users) (entity.Users, error) {
 	if user.Role == "" {
 		user.Role = entity.Participant
 	}
-	err := r.db.Raw("INSERT INTO users (username, fullname, email, password, role) VALUES (@Username, @Fullname, @Email, @Password, @Role)", user).Create(&user).Error
+	err := r.db.Raw("INSERT INTO users (username, fullname, email, password, role, created_at) VALUES (@Username, @Fullname, @Email, @Password, @Role, @CreatedAt)", user).Create(&user).Error
 	if err != nil {
 		return user, err
 	}

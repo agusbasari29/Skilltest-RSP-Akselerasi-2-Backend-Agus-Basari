@@ -12,8 +12,8 @@ POST http://localhost:8080/auth/register HTTP/1.1
 content-type: application/json
 
 {
-    "username": "sangatadmin",
-    "fullname": "m hafizh a",
+    "username": "jabrix",
+    "fullname": "bang bosqi",
     "email": "agusbasari299@gmail.com",
     "password": "apasajalah",
     "role": "admin"
@@ -87,3 +87,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMiwic
 ###
 
 GET http://localhost:8080/seeder HTTP/1.1
+
+
+###
+
+POST http://localhost:8080/api/detail_report HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6InB3QmtqR2NAbk5RVG9JSS5uZXQiLCJ1c2VybmFtZSI6InZFbklhbEUiLCJleHAiOjE2NTExMjI3MzYsImlhdCI6MTYxOTU4NjczNiwiaXNzIjoieGp4In0.lxCRO8B1bMfbEgP6H57D2jYHdhU3_13uu8PKfiskfqc
+
+{
+    "id": 8
+}

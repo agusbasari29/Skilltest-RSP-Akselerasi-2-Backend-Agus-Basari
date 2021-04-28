@@ -11,6 +11,13 @@ type RequestUser struct {
 	Role     entity.UserRole `json:"role"`
 }
 
+type RequestUserUpdate struct {
+	ID       uint            `json:"id"`
+	Username string          `json:"username" validate:"required,alphanum"`
+	Fullname string          `json:"fullname" validate:"required"`
+	Email    string          `json:"email" validate:"required,email"`
+}
+
 type RequestUserProfile struct {
 	ID uint `json:"id"`
 }

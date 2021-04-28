@@ -40,11 +40,19 @@ func (r EventRoutes) Route() []helper.Route {
 		}, {
 			Path:    "/events",
 			Method:  "DELETE",
-			Handler: []gin.HandlerFunc{eventHandler.DeletedEvent},
+			Handler: []gin.HandlerFunc{eventHandler.DeleteEvent},
 		}, {
 			Path:    "/purchase",
-			Method:  "post",
+			Method:  "POST",
 			Handler: []gin.HandlerFunc{eventHandler.MakeEventPurchase},
+		}, {
+			Path:    "/event_detail",
+			Method:  "POST",
+			Handler: []gin.HandlerFunc{eventHandler.GetEventDetail},
+		}, {
+			Path:    "/event_release",
+			Method:  "GET",
+			Handler: []gin.HandlerFunc{eventHandler.GetEventByReleaseStatus},
 		},
 	}
 }

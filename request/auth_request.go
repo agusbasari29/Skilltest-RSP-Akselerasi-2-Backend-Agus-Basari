@@ -24,6 +24,7 @@ type RequestAuthUpdate struct {
 	Role     entity.UserRole `json:"role"`
 }
 
+
 type RequestAuthForgetPassword struct {
 	Email string `json:"email" validate:"required,email"`
 }

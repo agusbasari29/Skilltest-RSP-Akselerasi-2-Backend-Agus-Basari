@@ -22,5 +22,5 @@ type RequestEvent struct {
 }
 
 type RequestEventByID struct {
-	ID uint `json:"id"`
+	ID uint `json:"id" vaildate:"required"`
 }

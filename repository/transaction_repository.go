@@ -22,7 +22,7 @@ func NewTransactionRepository(db *gorm.DB) *transactionRepository {
 }
 
 func (r *transactionRepository) InsertTransaction(trx entity.Transaction) (entity.Transaction, error) {
-	err := r.db.Raw("INSERT INTO transactions (participant_id, creator_id, event_id, amount, status_payment, created_at) VALUES (@ParticipantId, @CreatorId, @EventId, @Amount, @StatusPayment, @CreatedAt)", trx).Save(&trx).Error
+	err := r.db.Raw("INSERT INTO transactions (participant_id, creator_id, event_id, amount, status_payment, created_at) VALUES (@ParticipantId, @CreatorId, @EventId, @Amount, @StatusPayment, @CreatedAt) WHERE NOT EXIST (SELECT 1 FROM transactions WHERE event_id = @EventId AND participant_id = @ParticipantId)", trx).Save(&trx).Error
 	if err != nil {
 		return trx, err
 	}

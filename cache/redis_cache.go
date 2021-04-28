@@ -2,6 +2,7 @@ package cache
 
 import (
 	"encoding/json"
+	"log"
 	"time"
 
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/entity"
@@ -36,6 +37,7 @@ func (c *redisCache) Set(key string, value *entity.Event) {
 	if err != nil {
 		panic(err)
 	}
+	log.Println("Set", key, json)
 	client.Set(key, json, c.expires*time.Second)
 }
 

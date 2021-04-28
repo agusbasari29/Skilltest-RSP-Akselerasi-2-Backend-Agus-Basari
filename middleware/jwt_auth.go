@@ -7,7 +7,6 @@ import (
 
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/helper"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/services"
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,10 +20,10 @@ func AuthorizeJWT(service services.JWTServices) gin.HandlerFunc {
 		}
 		token, err := service.ValidateToken(authHeader)
 		if token.Valid {
-			claims := token.Claims.(jwt.MapClaims)
-			log.Println("Claim[user_id]: ", claims["user_id"])
-			log.Println("Claim[email]: ", claims["email"])
-			log.Println("Claim[role]: ", claims["role"])
+			// claims := token.Claims.(jwt.MapClaims)
+			// log.Println("Claim[user_id]: ", claims["user_id"])
+			// log.Println("Claim[email]: ", claims["email"])
+			// // log.Println("Claim[role]: ", claims["role"])
 		} else {
 			log.Println(err)
 			response := helper.ResponseFormatter(http.StatusUnauthorized, "error", errors.New("token is not valid"), nil)

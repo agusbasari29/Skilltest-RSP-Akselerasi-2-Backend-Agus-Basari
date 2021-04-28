@@ -175,7 +175,16 @@ func (h *participantHandler) PaymentConfirmation(ctx *gin.Context) {
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 			return
 		}
-		response := helper.ResponseFormatter(http.StatusOK, "success", "Recipt has been sent.", nil)
+		var update request.RequestTransactionUpdate
+		update.ID = req.ID
+		update.Receipt = destFile
+		updated, err := h.trxServices.UpdateTransaction(update)
+		if err != nil {
+			response := helper.ResponseFormatter(http.StatusBadRequest, "error", "Failed to confirm payment", nil)
+			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
+			return
+		}
+		response := helper.ResponseFormatter(http.StatusOK, "success", "Recipt has been sent.", updated)
 		ctx.JSON(http.StatusOK, response)
 	} else {
 		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)
