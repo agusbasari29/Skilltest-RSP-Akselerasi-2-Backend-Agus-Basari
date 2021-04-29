@@ -125,7 +125,7 @@ func (h *participantHandler) GetPasticipantPendingTransaction(ctx *gin.Context) 
 			response := helper.ResponseFormatter(http.StatusBadRequest, "error", "Failed to retreive pending transaction data", nil)
 			ctx.AbortWithStatusJSON(http.StatusBadRequest, response)
 		}
-		response := helper.ResponseFormatter(http.StatusOK, "success", "Successfully create new transaction.", pending)
+		response := helper.ResponseFormatter(http.StatusOK, "success", "Successfully fetch pending transaction.", pending)
 		ctx.JSON(http.StatusOK, response)
 	} else {
 		response := helper.ResponseFormatter(http.StatusBadRequest, "error", "User privilege...", nil)

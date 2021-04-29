@@ -1,9 +1,6 @@
 package routes
 
 import (
-	"os"
-
-	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/cache"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/database"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/handler"
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/helper"
@@ -20,9 +17,8 @@ func (r EventRoutes) Route() []helper.Route {
 	trxRepo := repository.NewTransactionRepository(db)
 	eventServices := services.NewEventServices(eventRepo)
 	jwtServices := services.NewJWTService()
-	var cacheService cache.EventCache = cache.NewRedisCache(os.Getenv("REDIS_ADDR_PORT"), 0, 10)
 	trxServices := services.NewTransactionServices(trxRepo)
-	eventHandler := handler.NewEventHandler(eventServices, jwtServices, trxServices, cacheService)
+	eventHandler := handler.NewEventHandler(eventServices, jwtServices, trxServices)
 
 	return []helper.Route{
 		{
@@ -42,12 +38,12 @@ func (r EventRoutes) Route() []helper.Route {
 			Method:  "DELETE",
 			Handler: []gin.HandlerFunc{eventHandler.DeleteEvent},
 		}, {
-			Path:    "/purchase",
-			Method:  "POST",
+			Path:    "/purchase/:id",
+			Method:  "GET",
 			Handler: []gin.HandlerFunc{eventHandler.MakeEventPurchase},
 		}, {
-			Path:    "/event_detail",
-			Method:  "POST",
+			Path:    "/event_detail/:id",
+			Method:  "GET",
 			Handler: []gin.HandlerFunc{eventHandler.GetEventDetail},
 		}, {
 			Path:    "/event_release",

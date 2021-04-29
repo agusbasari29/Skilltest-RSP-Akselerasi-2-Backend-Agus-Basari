@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"time"
+
 	"github.com/agusbasari29/Skilltest-RSP-Akselerasi-2-Backend-Agus-Basari/entity"
 	"gorm.io/gorm"
 )
@@ -9,9 +11,9 @@ type EventRepository interface {
 	InsertEvent(event entity.Event) (entity.Event, error)
 	GetAllEvent() []entity.Event
 	UpdateEvent(event entity.Event) (entity.Event, error)
-	DeleteEvent(event entity.Event) error
-	GetEventByStatus(even entity.Event) []entity.Event
-	GetEventByID(event entity.Event) (*entity.Event, error)
+	DeleteEvent(eventId uint) error
+	GetEventByStatus(status string) []entity.Event
+	GetEventByID(eventId uint) (*entity.Event, error)
 }
 
 type eventRepository struct {
@@ -47,25 +49,26 @@ func (r *eventRepository) UpdateEvent(event entity.Event) (entity.Event, error) 
 	return event, nil
 }
 
-func (r *eventRepository) DeleteEvent(event entity.Event) error {
-	err := r.db.Raw("UPDATE events SET deleted_at = &DeletedAt WHERE id = @ID", event).Save(&event).Error
+func (r *eventRepository) DeleteEvent(eventId uint) error {
+	err := r.db.Raw("UPDATE events SET deleted_at = ? WHERE id = ?", eventId, time.Now()).Save(nil).Error
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *eventRepository) GetEventByStatus(event entity.Event) []entity.Event {
+func (r *eventRepository) GetEventByStatus(status string) []entity.Event {
 	var events []entity.Event
-	err := r.db.Raw("SELECT * FROM events WHERE status = @Status", event).Find(&events).Error
+	err := r.db.Raw("SELECT * FROM events WHERE status = ?", status).Find(&events).Error
 	if err != nil {
 		return nil
 	}
 	return events
 }
 
-func (r *eventRepository) GetEventByID(event entity.Event) (*entity.Event, error) {
-	err := r.db.Raw("SELECT * FROM events WHERE id = @ID").Take(&event).Error
+func (r *eventRepository) GetEventByID(eventId uint) (*entity.Event, error) {
+	var event entity.Event
+	err := r.db.Raw("SELECT * FROM events WHERE id = ?", eventId).Take(&event).Error
 	if err != nil {
 		return &event, err
 	}

@@ -14,9 +14,9 @@ type EventServices interface {
 	CreateEvent(req request.RequestEvent) (entity.Event, error)
 	UpdateEvent(req request.RequestEvent) (entity.Event, error)
 	GetAllEvent() []entity.Event
-	DeleteEvent(req request.RequestEventByID) bool
+	DeleteEvent(eventId uint) bool
 	GetReleaseEvent() []entity.Event
-	GetEventByID(req request.RequestEventByID) (*entity.Event, error)
+	GetEventByID(eventId uint) (*entity.Event, error)
 }
 
 type eventServices struct {
@@ -63,29 +63,24 @@ func (s *eventServices) GetAllEvent() []entity.Event {
 	return nil
 }
 
-func (s *eventServices) DeleteEvent(req request.RequestEventByID) bool {
-	var event entity.Event
-	event.ID = req.ID
-	err := s.eventRepository.DeleteEvent(event)
+func (s *eventServices) DeleteEvent(eventId uint) bool {
+	err := s.eventRepository.DeleteEvent(eventId)
 	return err == nil
 }
 
 func (s *eventServices) GetReleaseEvent() []entity.Event {
-	var event entity.Event
-	event.Status = entity.Release
-	result := s.eventRepository.GetEventByStatus(event)
+	status := "release"
+	result := s.eventRepository.GetEventByStatus(status)
 	if result == nil {
 		return nil
 	}
 	return result
 }
 
-func (s *eventServices) GetEventByID(req request.RequestEventByID) (*entity.Event, error) {
-	var event entity.Event
-	event.ID = req.ID
-	result, err := s.eventRepository.GetEventByID(event)
+func (s *eventServices) GetEventByID(eventId uint) (*entity.Event, error) {
+	result, err := s.eventRepository.GetEventByID(eventId)
 	if err != nil {
-		return &event, err
+		return result, err
 	}
 	return result, nil
 }

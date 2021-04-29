@@ -29,10 +29,5 @@ func (r AuthRoutes) Route() []helper.Route {
 			Path:    "/login",
 			Handler: []gin.HandlerFunc{authHandler.Login},
 		},
-		// {
-		// 	Method:  "POST",
-		// 	Path:    "/forget_password",
-		// 	Handler: []gin.HandlerFunc{authHandler.ForgetPassword},
-		// },
 	}
 }

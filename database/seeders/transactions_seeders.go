@@ -17,7 +17,7 @@ func TransactionsSeedersUp(number int) {
 	trx := entity.Transaction{}
 	creator, _ := userRepo.GetUserByRole(entity.Users{Role: "creator"})
 	participant, _ := userRepo.GetUserByRole(entity.Users{Role: "participant"})
-	events := eventRepo.GetEventByStatus(entity.Event{Status: "release"})
+	events := eventRepo.GetEventByStatus("release")
 	var payment entity.StatusPayment
 	for i := 0; i < number; i++ {
 		j := rand.Intn(len(creator))

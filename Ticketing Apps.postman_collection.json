@@ -1,0 +1,517 @@
+{
+	"info": {
+		"_postman_id": "3c53cda1-f23a-4d84-bb0c-ef40ff374fdf",
+		"name": "Ticketing Apps",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"\",\n  \"password\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/auth/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "##Parameter"
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/auth/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Users",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"jabrix\",\n    \"fullname\": \"bang bosqi\",\n    \"email\": \"agusbasari299@gmail.com\",\n    \"password\": \"apasajalah\",\n    \"role\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Creators",
+			"item": [
+				{
+					"name": "Create Creator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"creator_id\": 9,\n    \"title_event\": \"Webinar Bla bla bla\",\n    \"link_webinar\": \"http://wwww.webinar.com\",\n    \"description\": \"Webinar onlie disaat pandemi\",\n    \"banner\": \"filesimagebanner\",\n    \"price\": 200000,\n    \"quantity\": 150,\n    \"status\": \"draft\",\n    \"event_start_date\": \"2021-05-01T00:00:00-00:00\",\n    \"event_end_date\": \"2021-05-02T00:00:00-00:00\",\n    \"campaign_start_date\": \"2021-04-23T00:00:00-00:00\",\n    \"campaign_end_date\": \"2021-04-29T00:00:00-00:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/creators",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"creators"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Creator",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"creator_id\": 9,\n    \"title_event\": \"Webinar Bla bla bla\",\n    \"link_webinar\": \"http://wwww.webinar.com\",\n    \"description\": \"Webinar onlie disaat pandemi\",\n    \"banner\": \"filesimagebanner\",\n    \"price\": 200000,\n    \"quantity\": 150,\n    \"status\": \"draft\",\n    \"event_start_date\": \"2021-05-01T00:00:00-00:00\",\n    \"event_end_date\": \"2021-05-02T00:00:00-00:00\",\n    \"campaign_start_date\": \"2021-04-23T00:00:00-00:00\",\n    \"campaign_end_date\": \"2021-04-29T00:00:00-00:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/creators",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"creators"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Creator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Creator",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/creators",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"creators"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Report",
+			"item": [
+				{
+					"name": "All Summary Report",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/summary_report",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"summary_report"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Summary Report By Creator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/creator_summary_report",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"creator_summary_report"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detail Report",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/detail_report/28",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"detail_report",
+								"28"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "Create Event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"creator_id\": 9,\n    \"title_event\": \"Webinar Bla bla bla\",\n    \"link_webinar\": \"http://wwww.webinar.com\",\n    \"description\": \"Webinar onlie disaat pandemi\",\n    \"banner\": \"filesimagebanner\",\n    \"price\": 200000,\n    \"quantity\": 150,\n    \"status\": \"draft\",\n    \"event_start_date\": \"2021-05-01T00:00:00-00:00\",\n    \"event_end_date\": \"2021-05-02T00:00:00-00:00\",\n    \"campaign_start_date\": \"2021-04-23T00:00:00-00:00\",\n    \"campaign_end_date\": \"2021-04-29T00:00:00-00:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/creators",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"creators"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/events",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Events Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 28\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/events",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Release Event - Participant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/event_release",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"event_release"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Event",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 23,\n    \"creator_id\": 11,\n    \"title_event\": \"Webinar Bla bla bla\",\n    \"link_webinar\": \"http://wwww.webinar.com\",\n    \"description\": \"Webinar onlie disaat pandemi\",\n    \"banner\": \"/files/image/banner\",\n    \"price\": 200000,\n    \"quantity\": 150,\n    \"status\": \"draft\",\n    \"event_start_date\": \"2021-05-01T00:00:00-00:00\",\n    \"event_end_date\": \"2021-05-02T00:00:00-00:00\",\n    \"campaign_start_date\": \"2021-04-23T00:00:00-00:00\",\n    \"campaign_end_date\": \"2021-04-29T00:00:00-00:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/events",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Purchase",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/purchase/28",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"purchase",
+								"28"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detail Event",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/event_release",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"event_release"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Transaction",
+			"item": [
+				{
+					"name": "Pending",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": null
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Confirmation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/payment_confirmation",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payment_confirmation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change Payment Status",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/payment_status",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payment_status"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNDEsInJvbGUiOiJhZG1pbiIsImVtYWlsIjoiYWd1c2Jhc2FyaTI5OUBnbWFpbC5jb20iLCJ1c2VybmFtZSI6ImphYnJpeCIsImV4cCI6MTY1MTEzMjQyOSwiaWF0IjoxNjE5NTk2NDI5LCJpc3MiOiJ4angifQ.eoYAbpiwDDdRvz4CdciguTAB7HqhwVl1bhXR2XM2TPA",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
